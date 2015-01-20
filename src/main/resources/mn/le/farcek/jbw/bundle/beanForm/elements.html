@@ -1,0 +1,119 @@
+<basicInput>
+    {% macro basicInput(frm,el) %}
+    {% if false%}
+    <div class="form-group has-feedback " ng-class="{'has-success': {{frm.name + '.' + el.name}}.$dirty && {{frm.name + '.' + el.name}}.$valid, 'has-error': {{frm.name + '.' + el.name}}.$dirty && {{frm.name + '.' + el.name}}.$invalid}">
+        <label for="{{el.id}}">{{ el.label | message}}</label>
+        {{errorsInput(el.errors)}}
+        <div>
+            <input id="{{el.id}}" name="{{el.name}}" ng-model="{{'bean.' + el.name}}"  type="{{el.type}}" class="form-control {{el.cssClass}}" value="{{el.value}}"  placeholder="{{el.placeholder| message}} ..." {{el.required?'required':''}}>
+            <span class="glyphicon  form-control-feedback" ng-class="{'glyphicon-ok': {{frm.name + '.' + el.name}}.$dirty && {{frm.name + '.' + el.name}}.$valid, 'glyphicon-remove': {{frm.name + '.' + el.name}}.$dirty && {{frm.name + '.' + el.name}}.$invalid}" ></span>
+        </div>
+        {%if el.required   %}<span class="text-warning help-block" ng-show="{{frm.name + '.' + el.name}}.$invalid">Requared</span>{%endif%}
+    </div>
+
+    <div class="form-group" >
+        <label for="{{el.id}}">{{ el.label | message}}</label>
+        {{errorsInput(el.errors)}}
+        <div class="input-group">
+            <input id="{{el.id}}" name="{{el.name}}" ng-model="{{'bean.' + el.name}}"  type="{{el.type}}" class="form-control {{el.cssClass}}" value="{{el.value}}"  placeholder="{{el.placeholder| message}} ..." {{el.required?'required':''}}>
+            <span class="input-group-addon">
+                <span class="glyphicon" ng-class="{'glyphicon-ok': {{frm.name + '.' + el.name}}.$dirty && {{frm.name + '.' + el.name}}.$valid, 'glyphicon-remove': {{frm.name + '.' + el.name}}.$dirty && {{frm.name + '.' + el.name}}.$invalid}" ></span>
+            </span>
+        </div>
+        {%if el.required   %}<span class="text-warning help-block" ng-show="{{frm.name + '.' + el.name}}.$invalid">Requared</span>{%endif%}
+    </div>
+    {% endif%}
+    
+    <div class="form-group" >
+        <label for="{{el.id}}">{{ el.label | message}} {%if el.required   %}<span class="form-required-control">*</span>{%endif%} </label>
+        {{errorsInput(el.errors)}}
+        <input id="{{el.id}}" name="{{el.name}}" type="{{el.type}}" class="form-control {{el.cssClass}}" value="{{el.value}}"  placeholder="{{el.placeholder| message}} ..."  {{el.readonly?'readonly':''}} {{el.required?'required':''}} >
+    </div>
+
+    {% endmacro %}
+</basicInput>
+<basicFile>
+    {% macro basicFile(frm,el) %}
+    <div class="form-group">
+        <label for="{{el.id}}">{{ el.label | message}}</label>
+        {{errorsInput(el.errors)}}
+        <input id="{{el.id}}" name="{{el.name}}" type="file" class="form-control {{el.cssClass}}"  >
+    </div>
+    {% endmacro %}
+</basicFile>
+<checkboxInput>
+    {% macro checkboxInput(frm,el) %}
+    <div class="checkbox">
+        {{errorsInput(el.errors)}}
+        <label> 
+            {% if el.value == 'true' %}
+            <input id="{{el.id}}" name="{{el.name}}" type="checkbox"  class="{{el.cssClass}}"  value="true" checked > {{el.label| message}}
+            {% else %}
+            <input id="{{el.id}}" name="{{el.name}}" type="checkbox"  class="{{el.cssClass}}"  value="true"  > {{el.label| message}}
+            {% endif %} 
+        </label>
+    </div>
+    {% endmacro %}
+</checkboxInput>
+<basicSelect>
+    {% macro basicSelect(frm,el) %}
+    <div class="form-group">
+        <label for="{{el.id}}">{{ el.label | message}}</label>
+        {{errorsInput(el.errors)}}
+        <select id="{{el.id}}" name="{{el.name}}" class="form-control {{el.cssClass}}" >
+            <option value=""> {{el.placeholder| message}} </option>
+            {% for o in el.selectionItems.entrySet %}
+            {%if el | invoke('isSelected', args(o)) %}
+            <option value="{{o.key}}" selected>{{o.value| message }}</option>
+            {%else%}
+            <option value="{{o.key}}">{{o.value| message }}   </option>
+            {%endif%}
+            {% endfor%}
+
+        </select>
+
+    </div>
+    {% endmacro %}
+</basicSelect>
+<entitySelect>
+    {% macro entitySelect(frm,el) %}
+    <div class="form-group">
+        <label for="{{el.id}}">{{ el.label | message}}</label>
+        {{errorsInput(el.errors)}}
+        <input id="{{el.id}}" name="{{el.name}}" value="{{el.value}}" data-value-text="{{el.valueName}}" class="form-control dataSelect2 {{el.cssClass}}" placeholder="{{el.placeholder| message}} ..."  data-url="{{ el.dataSource.bundleAction | href  }}" >            
+    </div>
+    {% endmacro %}
+</entitySelect>
+
+<submitButton>
+    {% macro submitButton(frm,el) %}
+    <div class="form-group">
+        <button id="{{el.id}}" type="submit" class="btn {{el.cssClass}}" ng-disabled="{{frm.name}}.$invalid" >{{ el.label | message}}</button>        
+    </div>
+    {% endmacro %}
+</submitButton>
+
+<errorsForm>
+    {% macro errorsForm(errors) %}
+    {% if errors is not null %}
+    <div class="alert alert-warning">
+        <ul>
+            {% for er in errors%}
+            <li>{{er}}</li>
+            {% endfor %}
+        </ul>
+    </div>
+    {%endif%}
+    {% endmacro %}
+</errorsForm>
+<errorsInput>
+    {% macro errorsInput(errors) %}
+    {% if errors is not null %}
+    <ul class="text-warning">
+        {% for er in errors%}
+        <li>{{er}}</li>
+        {% endfor %}
+    </ul>
+    {%endif%}
+    {% endmacro %}
+</errorsInput>

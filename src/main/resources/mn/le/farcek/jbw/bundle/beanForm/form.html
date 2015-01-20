@@ -1,0 +1,52 @@
+{% import 'bundle://beanForm/elements'%}
+<form name="{{frm.name}}" novalidate role="form" method="{{frm.method}}" enctype="{{frm.enctype}}" action="{{frm.action}}">
+    {{errorsForm(frm.errors)}}
+    {% for el in frm.elements%} 
+    {{element(frm,el)}}
+    {% endfor%}
+    
+    <div class="form actions">
+        {% for el in frm.bottomActions%} 
+        {{element(frm,el)}}
+        {% endfor%}
+    </div>
+    {{'{{bean | json}}'}}
+</form>
+
+{% macro element(frm,el) %}
+{% set r=false %}
+{% if(el.viewName == 'basicInput')%}
+{{basicInput(frm,el)}}
+{% set r=true %}
+{% endif%}
+
+{% if(el.viewName == 'basicFile')%}
+{{basicFile(frm,el)}}
+{% set r=true %}
+{% endif%}
+
+{% if(el.viewName == 'checkboxInput')%}
+{{checkboxInput(frm,el)}}
+{% set r=true %}
+{% endif%}
+
+{% if(el.viewName == 'basicSelect')%}
+{{basicSelect(frm,el)}}
+{% set r=true %}
+{% endif%}
+
+{% if(el.viewName == 'submitButton')%}
+{{submitButton(frm,el)}}
+{% set r=true %}
+{% endif%}
+
+{% if(el.viewName == 'entitySelect')%}
+{{entitySelect(frm,el)}}
+{% set r=true %}
+{% endif%}
+
+{% if r == false%}
+<span class="text-muted">`{{el.name}}` the form element is not supported; viewName = {{el.viewName}} </span>
+{% endif %}
+
+{% endmacro %}
